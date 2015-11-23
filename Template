@@ -1,0 +1,10 @@
+#include <stdio.h>
+#include <algorithm>
+#include <vector>
+#define NM 55
+#define MOD 1000000007
+#define INF 0x7fffffff
+#define FOR(i,n,m) for (int i=n;i<=m;i++)
+#define si(n) fscanf(in,"%d",&n)
+FILE *in = stdin, *out = stdout;
+//FILE *in=fopen("input.txt","r"),*out=fopen("output.txt","w");
