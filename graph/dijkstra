@@ -1,0 +1,60 @@
+typedef long long int ll;
+struct dijkstra{
+	const int DEFAULT = 0x7fffffff;
+	struct POINT{
+		int v;
+		ll cnt;
+		POINT(){};
+		POINT(int _v,ll _cnt):v(_v),cnt(_cnt){};
+	};
+	struct HEAP{
+		int x;
+		ll cnt;
+		HEAP(){};
+		HEAP(int _x,ll _cnt):x(_x),cnt(_cnt){};
+		bool operator()(HEAP A,HEAP B){
+			return A.cnt>B.cnt;
+		};
+	}H[100005]; // TODO : edit here
+	int n, m, HN;
+	std::vector<ll>dis;
+	std::vector<bool> visit;
+	std::vector <std::vector<POINT> > edge;
+	dijkstra(int v_size, int e_size){
+		n=v_size; m=e_size;
+		dis.resize(n+1);
+		visit.resize(n+1);
+		edge.resize(n+1);
+		FOR (i,1,n) edge[i].clear();
+	}
+	void push(HEAP A){ H[++HN]=A; std::push_heap(H+1,H+1+HN,HEAP()); }
+	HEAP pop(){ HEAP X=H[1]; std::pop_heap(H+1,H+1+HN,HEAP()); HN--; return X; }
+
+	std::vector<ll> distance_dijkstra(int start){
+		FOR (i,1,n) dis[i]=DEFAULT, visit[i]=false;
+		HN=0;
+		std::make_heap(H+1,H+1+HN,HEAP());
+		push(HEAP(start,0));
+		while (HN){
+			HEAP X=pop();
+			if (visit[X.x]) continue;
+			visit[X.x]=1;
+			dis[X.x]=X.cnt;
+			if (edge[X.x].size()==0) continue;
+			FOR (i,0,edge[X.x].size()-1){
+				int y=edge[X.x][i].v;
+				ll cnt=edge[X.x][i].cnt;
+				if (dis[y]<=dis[X.x]+cnt) continue;
+				dis[y]=dis[X.x]+cnt;
+				push(HEAP(y,dis[y]));
+			}
+		}
+		return dis;
+	}
+
+	//usage
+	void push_edge(int x,int y,ll cnt){ // directed edge
+		edge[x].push_back(POINT(y,cnt));
+	}
+	std::vector<ll> distance(int start){ return distance_dijkstra(start); }
+};
