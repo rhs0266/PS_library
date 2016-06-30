@@ -1,6 +1,6 @@
 typedef long long int ll;
 struct dijkstra {
-	const int DEFAULT = 0x7fffffff;
+	int DEFAULT;
 	struct POINT {
 		int v;
 		ll cnt;
@@ -20,8 +20,8 @@ struct dijkstra {
 	std::vector<ll>dis;
 	std::vector<bool> visit;
 	std::vector <std::vector<POINT> > edge;
-	dijkstra(int v_size, int e_size) {
-		n = v_size; m = e_size;
+	dijkstra(int v_size, int e_size, int _DEFAULT) {
+		n = v_size; m = e_size; DEFAULT = _DEFAULT;
 		dis.resize(n + 1);
 		visit.resize(n + 1);
 		edge.resize(n + 1);
@@ -34,7 +34,7 @@ struct dijkstra {
 		FOR(i, 1, n) dis[i] = DEFAULT, visit[i] = false;
 		HN = 0;
 		std::make_heap(H + 1, H + 1 + HN, HEAP());
-		push(HEAP(start, 0));
+		push(HEAP(start, 0)); // Check value for 0
 		while (HN) {
 			HEAP X = pop();
 			if (visit[X.x]) continue;

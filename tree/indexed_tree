@@ -1,13 +1,13 @@
 typedef long long int ll;
 struct indexed_tree {
-	const int DEFAULT = 0;
+	ll DEFAULT;
 	int N;
 	std::vector<ll> tree;
 	indexed_tree() {};
-	indexed_tree(ll size) {
+	indexed_tree(ll size, ll _DEFAULT) {
 		N = size;
-		tree.resize(size * 2 + 1);
-		FOR(i, 1, size) tree[i] = DEFAULT;
+		tree.resize(size * 2 + 2);
+		FOR(i, 1, size*2 + 1) tree[i] = DEFAULT;
 	}
 	void update_tree(int x, ll cnt, ll f(ll, ll)) {
 		if (x == 0) return;
