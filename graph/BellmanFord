@@ -1,14 +1,8 @@
-//*
+// https://www.acmicpc.net/problem/11657
 #include <stdio.h>
 #include <vector>
-#include <algorithm>
 #define FOR(i,n,m) for (int i=(n);i<=(m);i++)
 #define si(n) fscanf(in,"%d",&n)
-#define sd(n) fscanf(in,"%lf",&n)
-#define NM 105
-//#define MOD 1000000007ll
-#define INF 0x7fffffff
-#define vi vector<int>
 //FILE *in = fopen("input.txt", "r"), *out = fopen("output.txt", "w");
 FILE *in = stdin, *out = stdout;
 using namespace std;
