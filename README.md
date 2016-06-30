@@ -7,6 +7,8 @@
 * [Bellman Ford](https://github.com/rhs0266/PS_library/blob/master/graph/BellmanFord.rhs)
 * [Hopcroft Karp](https://github.com/rhs0266/PS_library/blob/master/graph/Hopcroft_Karp.bsw)
 * [Dijkstra](https://github.com/rhs0266/PS_library/blob/master/graph/dijkstra.rhs)
+* [Strong Connect Component]
+(https://github.com/rhs0266/PS_library/blob/master/graph/SCC.rhs)
 
 ##Simple
 * [Lower & Upper Bound](https://github.com/rhs0266/PS_library/blob/master/simple/lower%26upper%20bound.rhs)
