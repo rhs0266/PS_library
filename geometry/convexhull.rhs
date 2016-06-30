@@ -19,6 +19,7 @@ struct POINT {
 	}
 };
 struct ConvexHull {
+private:
 	vp a, output;
 	int n;
 
@@ -53,8 +54,9 @@ struct ConvexHull {
 		output = stack;
 	}
 
-	//usage
-	void init(vp _input) {
+public:
+	ConvexHull() {};
+	ConvexHull(vp _input) {
 		a.clear(); output.clear();
 		a = _input;
 		n = a.size();

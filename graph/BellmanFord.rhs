@@ -14,17 +14,10 @@ struct EDGE {
 	EDGE(int _v, ll _cnt) :v(_v), cnt(_cnt) {};
 };
 struct BellmanFord {
+private:
 	int n, m;
 	std::vector< std::vector<EDGE> > edge; // TODO : Change size as maximum N
 	std::vector<ll> dist;
-	BellmanFord() {};
-	BellmanFord(int _n) {
-		n = _n;
-		dist.clear(); edge.clear();
-		dist.resize(n + 1);
-		edge.resize(n + 1);
-	}
-
 	bool bellmanford(int start) {
 		FOR(i, 1, n) dist[i] = 0x7fffffff;
 		dist[start] = 0;
@@ -51,8 +44,14 @@ struct BellmanFord {
 		return neg_cycle;
 	}
 
-
-	// usage
+public:
+	BellmanFord() {};
+	BellmanFord(int _n) {
+		n = _n;
+		dist.clear(); edge.clear();
+		dist.resize(n + 1);
+		edge.resize(n + 1);
+	}
 	void push_edge(int x, int y, ll cnt) {
 		edge[x].push_back(EDGE(y, cnt));
 		//edge[y].push_back(EDGE(x, cnt)); // bi-directed case

@@ -2,16 +2,10 @@
 
 typedef long long int ll;
 struct segment_tree { // Lazy Propagation
-    const int DEFAULT = 0;
+private:
     int B, N;
     std::vector<ll> tree;
     std::vector<ll> accum_tree;
-    segment_tree(int size) {
-        B = N = size;
-        tree.resize(N * 4);
-        accum_tree.resize(N * 4);
-        FOR(i, 1, N * 4 - 1) tree[i] = accum_tree[i] = DEFAULT;
-    }
     ll update(int x, int L, int R, int range_L, int range_R, ll cnt, ll f(ll, ll)) {
         // L, R : current node's rane
         // range_L, range_R : target range
@@ -52,7 +46,14 @@ struct segment_tree { // Lazy Propagation
         return f(left_v, right_v);
     }
  
- 	// usage
+public:
+    ll DEFAULT;
+    segment_tree(int size, ll DEF) {
+        B = N = size;
+        tree.resize(N * 4);
+        accum_tree.resize(N * 4);
+        FOR(i, 1, N * 4 - 1) tree[i] = accum_tree[i] = DEFAULT;
+    }
     void update(int L, int R, ll cnt, ll f(ll, ll)) { update(1, 1, N, L, R, cnt, f); }
     ll find_single(int X, ll f(ll, ll)) { return find_single(1, 1, N, X, f); }
     ll find_range(int L, int R, ll f(ll, ll)) { return find_range(1, 1, N, L, R, f, DEFAULT); }

@@ -1,6 +1,6 @@
 typedef long long int ll;
 struct dijkstra {
-	int DEFAULT;
+private:
 	struct POINT {
 		int v;
 		ll cnt;
@@ -20,13 +20,7 @@ struct dijkstra {
 	std::vector<ll>dis;
 	std::vector<bool> visit;
 	std::vector <std::vector<POINT> > edge;
-	dijkstra(int v_size, int e_size, int _DEFAULT) {
-		n = v_size; m = e_size; DEFAULT = _DEFAULT;
-		dis.resize(n + 1);
-		visit.resize(n + 1);
-		edge.resize(n + 1);
-		FOR(i, 1, n) edge[i].clear();
-	}
+	
 	void push(HEAP A) { H[++HN] = A; std::push_heap(H + 1, H + 1 + HN, HEAP()); }
 	HEAP pop() { HEAP X = H[1]; std::pop_heap(H + 1, H + 1 + HN, HEAP()); HN--; return X; }
 
@@ -52,7 +46,16 @@ struct dijkstra {
 		return dis;
 	}
 
-	//usage
+public:
+	int DEFAULT;
+	dijkstra() {};
+	dijkstra(int v_size, int e_size, int _DEFAULT) {
+		n = v_size; m = e_size; DEFAULT = _DEFAULT;
+		dis.resize(n + 1);
+		visit.resize(n + 1);
+		edge.resize(n + 1);
+		FOR(i, 1, n) edge[i].clear();
+	}
 	void push_edge(int x, int y, ll cnt) { // directed edge
 		edge[x].push_back(POINT(y, cnt));
 	}

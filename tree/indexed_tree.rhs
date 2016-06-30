@@ -1,14 +1,8 @@
 typedef long long int ll;
 struct indexed_tree {
-	ll DEFAULT;
+private:
 	int N;
 	std::vector<ll> tree;
-	indexed_tree() {};
-	indexed_tree(ll size, ll _DEFAULT) {
-		N = size;
-		tree.resize(size * 2 + 2);
-		FOR(i, 1, size*2 + 1) tree[i] = DEFAULT;
-	}
 	void update_tree(int x, ll cnt, ll f(ll, ll)) {
 		if (x == 0) return;
 		tree[x] = f(tree[x], cnt);
@@ -25,7 +19,15 @@ struct indexed_tree {
 		return res;
 	}
 
-	//usage
+public:
+	ll DEFAULT;
+	indexed_tree() {};
+	indexed_tree(ll size, ll _DEFAULT) {
+		N = size;
+		tree.resize(size * 2 + 2);
+		FOR(i, 1, size*2 + 1) tree[i] = DEFAULT;
+	}
+
 	void update(int x, ll cnt, ll f(ll, ll)) { update_tree(x + N, cnt, f); }
 	ll find(int left, int right, ll f(ll, ll)) { return find_tree(left + N, right + N, f); }
 };
