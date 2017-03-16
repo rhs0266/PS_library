@@ -2,9 +2,9 @@
 #include <algorithm>
 #include <vector>
 using namespace std;
-typedef int T;
+typedef long long int T;
 #define vp vector<POINT>
-#define EPS 1e-6
+#define EPS 1e-8
 struct POINT {
 	T x, y, dis;
 	double angle;
