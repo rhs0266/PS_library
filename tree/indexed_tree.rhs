@@ -24,6 +24,7 @@ public:
 	indexed_tree() {};
 	indexed_tree(ll size, ll _DEFAULT) {
 		N = size;
+		DEFAULT = _DEFAULT;
 		tree.resize(size * 2 + 2);
 		FOR(i, 1, size*2 + 1) tree[i] = DEFAULT;
 	}
