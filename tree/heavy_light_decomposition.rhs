@@ -1,0 +1,66 @@
+#include <stdio.h>
+#include <vector>
+using namespace std;
+#define NM 100005
+#define FOR(i,n,m) for (int i=(n);i<=(m);i++)
+#define si(n) fscanf(in,"%d",&n)
+int n;
+vector<int> con[NM];
+int depth[NM], sub[NM], visit[NM], par[NM], CN[NM], dfsn, dn;
+
+void dfs(int x) {
+	visit[x] = 1;
+	sub[x] = 1;
+	for (auto &y : con[x]) {
+		if (visit[y]) continue;
+		par[y] = x;
+		depth[y] = depth[x] + 1;
+		dfs(y);
+		sub[x] += sub[y];
+	}
+}
+void hld(int x, int cn) {
+	int maxsub = 0;
+  dfsn[x] = ++dn;
+	CN[x] = cn;
+	for (auto &y : con[x]) {
+		if (y == par[x]) continue;
+		if (sub[y] > sub[maxsub]) maxsub = y;
+	}
+	if (maxsub == 0) return;
+	hld(maxsub, cn);
+	for (auto &y : con[x]) {
+		if (y == par[x] || y == maxsub) continue;
+		hld(y, y);
+	}
+}
+
+// Example: get LCA of x, y
+void input() {
+	si(n);
+	FOR(i, 1, n - 1) {
+		int x, y;
+		si(x), si(y);
+		con[x].push_back(y);
+		con[y].push_back(x);
+	}
+}
+void pro() {
+	int root = 1;
+	dfs(root);
+	hld(root, root);
+	int Q; si(Q);
+	FOR(q, 1, Q) {
+		int x, y; si(x), si(y);
+		while (CN[x] != CN[y]) {
+			if (depth[CN[x]] > depth[CN[y]]) x = par[CN[x]];
+			else y = par[CN[y]];
+		}
+		fprintf(out, "%d\n", depth[x] > depth[y] ? y : x);
+	}
+}
+int main() {
+	input();
+	pro();
+	return 0;
+}
