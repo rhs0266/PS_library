@@ -36,6 +36,7 @@ void hld(int x, int cn) {
 }
 
 // Example: get LCA of x, y
+// prob: boj.kr/11438
 void input() {
 	si(n);
 	FOR(i, 1, n - 1) {
