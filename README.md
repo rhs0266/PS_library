@@ -14,6 +14,7 @@
 
 ##String
 * [KMP](https://github.com/rhs0266/PS_library/blob/master/string/KMP.rhs)
+* [Suffix Array & LCP](https://github.com/rhs0266/PS_library/blob/master/string/SuffixArray%26LCP.rhs)
 
 ##Tree
 * [Indexed Tree](https://github.com/rhs0266/PS_library/blob/master/tree/indexed_tree.rhs)
