@@ -3,7 +3,7 @@
 typedef long long int ll;
 struct segment_tree { // Lazy Propagation
 private:
-    int B, N;
+    int N;
     std::vector<ll> tree;
     std::vector<ll> accum_tree;
     ll update(int x, int L, int R, int range_L, int range_R, ll cnt, ll f(ll, ll)) {
@@ -49,7 +49,7 @@ private:
 public:
     ll DEFAULT;
     segment_tree(int size, ll DEF) {
-        B = N = size;
+        N = size;
         tree.resize(N * 4);
         accum_tree.resize(N * 4);
         FOR(i, 1, N * 4 - 1) tree[i] = accum_tree[i] = DEFAULT;
