@@ -1,4 +1,4 @@
-MANUAL
+# MANUAL
 
 1. /
 
@@ -16,3 +16,26 @@ MANUAL
 
 * validator code : 주어진 입력이 description을 올바르게 따랐는 지 확인하는 코드이다.
 
+3. /standard_checkers/
+
+* lcmp : Line compare, Ignore whitespaces
+
+* rcmp6 : Single or more double, max any error 1e-6
+
+* ncmp : Single or more int64, Ignore whitespaces
+
+-----------------------------------------------------------------------------------------------------------
+
+# How to use
+
+1. /generators/ 에 데이터 생성용 코드들(*[generator name].cpp*)과 *solution.cpp* 와 *validator.cpp* 를 작성한다.
+
+2. *data_info.txt*에 첫 줄에는 generator 갯수 **gen_n**, 다음 **gen_n**개 줄에는 cpp 이름들(".cpp"는 제외), 다음 줄에는 test data 개수 **data_n**, 다음 **data_n**개 줄에는 test data 1개당 1줄의 command
+
+3. /에서 $make clean => **주의** /testdata/ 내부 내용 삭제
+
+4. /에서 $make DM => /testdata/ 내부에 데이터 생성
+
+5. /에서 $make validate => / 에 validate exe 파일 생성
+
+6. /에서 $./validate {cmp} => {cmp}를 통해서 data_checker.cpp의 결과와 /testdata/ 안의 결과를 비교
