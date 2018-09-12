@@ -1,0 +1,4 @@
+1
+gen_normal
+1
+gen_normal 1 1
