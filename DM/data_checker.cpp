@@ -64,12 +64,11 @@ int main(int argc, char* argv[])
 {
     freopen("data_info.txt","r",stdin);
     assert(stdin != NULL);
-    assert(argc == 2);
+    assert(argc == 3);
     int data_n = atoi(argv[1]);
+	string compare = argv[2];
 
     cout << "@ Execute Checker" << endl;
-    
-    system(("g++ checker.cpp -o testdata/checker").c_str());
 
     for (int i=1;i<=data_n;i++){
 
