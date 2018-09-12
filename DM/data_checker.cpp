@@ -6,10 +6,52 @@
 #include <vector>
 #include <string>
 
+#define MAXLEN 1000005
+
+char bufA[MAXLEN], bufB[MAXLEN];
+
 using namespace std;
 
 //FILE *in = fopen("data_info.txt", "r");
 
+bool compare(string fileA, string fileB){
+    FILE *inA = fopen(fileA, "r"), *inB = fopen(fileB, "r");
+    assert(inA != NULL && inB != NULL);
+    for (;;){
+        if (feof(inA) && feof(inB)){
+            return true;
+        }
+        if (feof(inA) && !feof(inB)){
+            while (fgets(bufB, MAXLEN, inB)!=NULL){
+                int idx=0;
+                while (bufB[idx]){
+                    if (bufB[idx]=='\n' || bufB[idx]==' '){
+                        idx++;
+                        continue;
+                    }else{
+                        return false;
+                    }
+                }
+            }
+        }
+        if (!feof(inA) && feof(inB)){
+            while (fgets(bufA, MAXLEN, inA)!=NULL){
+                int idx=0;
+                while (bufA[idx]){
+                    if (bufA[idx]=='\n' || bufA[idx]==' '){
+                        idx++;
+                        continue;
+                    }else{
+                        return false;
+                    }
+                }
+            }
+        }
+        string strA, strB;
+        strA = bufA, strB = bufB;
+        // TODO : trim strA and strB, compare them
+    }
+}
 
 /* Batch style data checker */
 int main(int argc, char* argv[])
