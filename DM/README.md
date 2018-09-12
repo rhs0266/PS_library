@@ -40,7 +40,7 @@
 
 5. /에서 $make CHECKER => / 에 *CHECKER* exe 파일 생성
 
-6. /에서 $./CHECKER {**data_n**}{**cmp**} => {**cmp**}를 통해서 ./generators/checker.cpp의 결과와 /testdata/ 안의 **data_n**개 결과를 비교
+6. /에서 $./CHECKER {**data_n**} {**cmp**} => {**cmp**}를 통해서 ./generators/checker.cpp의 결과와 /testdata/ 안의 **data_n**개 결과를 비교
 
 -----------------------------------------------------------------------------------------------------------
 
