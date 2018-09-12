@@ -18,7 +18,7 @@ int main(int argc, char* argv[])
     assert(stdin != NULL);
     assert(argc == 3);
     int data_n = atoi(argv[1]);
-	string compare = argv[2];
+	string comparer = argv[2];
 
     cout << "@ Execute Checker" << endl;
 
@@ -30,19 +30,19 @@ int main(int argc, char* argv[])
         sprintf(number_buffer,"%d",i);
         string number = number_buffer;
 
-		string compare = "./standard_checkers/" + compare;
+		string compare = "./standard_checkers/" + comparer;
 		string input = "./testdata/" + number + ".in";
 		string output = "./testdata/" + number + ".out";
 		string result = "./generators/checker.out";
         
 		// make result
-        system(("./generators/checker << ./testdata/"+number+".in >> ./generators/checker.out").c_str());
+        system(("./others < ./testdata/"+number+".in > ./generators/checker.out").c_str());
         
 		// compare
 		system((compare + " " + input + " " + output + " " + result).c_str());
         
 		// remove result
-        system(("rm ./generators/checker.out").c_str());
+        system("rm ./generators/checker.out");
     }
 
     return 0;
