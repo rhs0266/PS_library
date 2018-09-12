@@ -16,7 +16,7 @@ char com[1005]; // command line
 
 void compiles() {
     for (int i = 0; i < gen_n; i++) {
-        system(("g++ " + gens[i] + ".cpp -o generators/" + gens[i]).c_str());
+        system(("g++ ./generators/" + gens[i] + ".cpp -o ./generators/generators/" + gens[i]).c_str());
     }
 }
 

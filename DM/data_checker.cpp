@@ -14,7 +14,7 @@ using namespace std;
 
 //FILE *in = fopen("data_info.txt", "r");
 
-bool compare(string fileA, string fileB){
+bool str_compare(string fileA, string fileB){
     FILE *inA = fopen(fileA, "r"), *inB = fopen(fileB, "r");
     assert(inA != NULL && inB != NULL);
     for (;;){
@@ -33,6 +33,7 @@ bool compare(string fileA, string fileB){
                     }
                 }
             }
+            return true;
         }
         if (!feof(inA) && feof(inB)){
             while (fgets(bufA, MAXLEN, inA)!=NULL){
@@ -46,10 +47,15 @@ bool compare(string fileA, string fileB){
                     }
                 }
             }
+            return true;
         }
         string strA, strB;
         strA = bufA, strB = bufB;
         // TODO : trim strA and strB, compare them
+        
+        strA.erase(strA.find_last_not_of(" \n\r\t")+1);
+        strB.erase(strB.find_last_not_of(" \n\r\t")+1);
+
     }
 }
 
