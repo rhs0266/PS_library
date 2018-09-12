@@ -1,6 +1,5 @@
 #include "testlib.h"
 #include <assert.h>
-
 using namespace std;
 
 void check(){
@@ -20,8 +19,7 @@ void check(){
 
 int main(int argc, char* argv[])
 {
-    registerValidation(argc, argv);
-    
+    registerValidation(argc, argv);    
     check();
     inf.readEof();
     return 0;

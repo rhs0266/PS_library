@@ -8,56 +8,8 @@
 
 #define MAXLEN 1000005
 
-char bufA[MAXLEN], bufB[MAXLEN];
 
 using namespace std;
-
-//FILE *in = fopen("data_info.txt", "r");
-
-bool str_compare(string fileA, string fileB){
-    FILE *inA = fopen(fileA, "r"), *inB = fopen(fileB, "r");
-    assert(inA != NULL && inB != NULL);
-    for (;;){
-        if (feof(inA) && feof(inB)){
-            return true;
-        }
-        if (feof(inA) && !feof(inB)){
-            while (fgets(bufB, MAXLEN, inB)!=NULL){
-                int idx=0;
-                while (bufB[idx]){
-                    if (bufB[idx]=='\n' || bufB[idx]==' '){
-                        idx++;
-                        continue;
-                    }else{
-                        return false;
-                    }
-                }
-            }
-            return true;
-        }
-        if (!feof(inA) && feof(inB)){
-            while (fgets(bufA, MAXLEN, inA)!=NULL){
-                int idx=0;
-                while (bufA[idx]){
-                    if (bufA[idx]=='\n' || bufA[idx]==' '){
-                        idx++;
-                        continue;
-                    }else{
-                        return false;
-                    }
-                }
-            }
-            return true;
-        }
-        string strA, strB;
-        strA = bufA, strB = bufB;
-        // TODO : trim strA and strB, compare them
-        
-        strA.erase(strA.find_last_not_of(" \n\r\t")+1);
-        strB.erase(strB.find_last_not_of(" \n\r\t")+1);
-
-    }
-}
 
 /* Batch style data checker */
 int main(int argc, char* argv[])
@@ -72,21 +24,25 @@ int main(int argc, char* argv[])
 
     for (int i=1;i<=data_n;i++){
 
-        cout << "# " << i << " ........... ";
+        cout << "# " << i << " ........... " << endl;
 
         char number_buffer[1005];
         sprintf(number_buffer,"%d",i);
         string number = number_buffer;
-        
-        system(("./testdata/checker << ./testdata/"+number+".in >> ./testdata/checker.out").c_str());
-        
-        if (compare("./testdata/"+number+".out", "./testdata/check.out")){
-            cout << "Accept" << endl;
-        }else{
-            cout << "Wrong Answer" << endl;
-        }
 
-        system(("rm ./testdata/checker.out").c_str());
+		string compare = "./standard_checkers/" + compare;
+		string input = "./testdata/" + number + ".in";
+		string output = "./testdata/" + number + ".out";
+		string result = "./generators/checker.out";
+        
+		// make result
+        system(("./generators/checker << ./testdata/"+number+".in >> ./generators/checker.out").c_str());
+        
+		// compare
+		system((compare + " " + input + " " + output + " " + result).c_str());
+        
+		// remove result
+        system(("rm ./generators/checker.out").c_str());
     }
 
     return 0;

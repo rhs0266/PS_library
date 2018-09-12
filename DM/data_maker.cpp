@@ -16,7 +16,7 @@ char com[1005]; // command line
 
 void compiles() {
     for (int i = 0; i < gen_n; i++) {
-        system(("g++ ./generators/" + gens[i] + ".cpp -o ./generators/generators/" + gens[i]).c_str());
+        system(("g++ ./generators/" + gens[i] + ".cpp -o ./generators/" + gens[i]).c_str());
     }
 }
 
@@ -44,7 +44,6 @@ int main(int argc, char* argv[])
 
     cout << " Done" << endl;
 
-
     //////////////////////////
     // make input data      //
     //////////////////////////
@@ -63,7 +62,7 @@ int main(int argc, char* argv[])
         command.erase(command.find_last_not_of(" \n\r\t")+1);
         
         string output_name = number+".in";
-        system(("./generators/"+command+" >> testdata/"+output_name).c_str());
+        system(("./generators/"+command+" > testdata/"+output_name).c_str());
     }
 
     cout << " Done" << endl;
@@ -74,7 +73,7 @@ int main(int argc, char* argv[])
 
     cout << "Validating Input Data.....";
 
-    system("g++ validator.cpp -o testdata/validator");
+    system("g++ ./generators/validator.cpp -o ./generators/validator");
 
     for (int i = 1;i <= data_n; i++) {
         char number_buffer[5];
@@ -82,7 +81,7 @@ int main(int argc, char* argv[])
 
         string number = number_buffer;
 
-        system(("./testdata/validator << " + number + ".in").c_str());
+        system(("./generators/validator < ./testdata/" + number + ".in").c_str());
     }
 
     cout << " Done" << endl;
@@ -93,7 +92,7 @@ int main(int argc, char* argv[])
 
     cout << "Making Output Data........";
 
-    system("g++ solution.cpp -o testdata/solution");
+    system("g++ ./generators/solution.cpp -o ./testdata/solution");
 
     for (int i=1;i<=data_n;i++){
 
@@ -102,10 +101,9 @@ int main(int argc, char* argv[])
 
         string number = number_buffer;
 
-        system(("./testdata/solution << " + number + ".in >> " + number + ".out").c_str());
+        system(("./testdata/solution < ./testdata/" + number + ".in > ./testdata/" + number + ".out").c_str());
     }
     cout << " Done" <<endl;
-
 
     return 0;
 }
