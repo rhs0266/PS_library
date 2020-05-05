@@ -56,6 +56,7 @@ void multiply(const vector<int> &a,const vector<int> &b,vector<int> &res)
     vector <base> fa(all(a)), fb(all(b));
     int n = 1;
     while (n < max(sz(a),sz(b))) n <<= 1;
+    n<<=1;
     fa.resize(n); fb.resize(n);
     fft(fa,false); fft(fb,false);
     for (int i=0;i<n;i++) fa[i] *= fb[i];
