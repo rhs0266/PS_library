@@ -1,0 +1,125 @@
+// https://www.acmicpc.net/problem/11012
+
+#include <stdio.h>
+#include <algorithm>
+#include <queue>
+#include <vector>
+#include <string.h>
+#define FOR(i,n,m) for (int i=(n);i<=(m);i++)
+#define si(n) fscanf(in,"%d",&n)
+#define NM 10005
+typedef long long int ll;
+using namespace std;
+#pragma warning(disable:4996)
+FILE* in = fopen("input.txt", "r"), * out = fopen("output.txt", "w");
+//FILE* in = stdin, * out = stdout;
+
+struct NODE {
+	int v;
+	NODE* left, * right;
+	NODE() :v(0), left(nullptr), right(nullptr) {}
+}*tree[NM];
+
+int n, m;
+pair<int, int> p[NM];
+vector<int> X, Y;
+void input() {
+	si(n), si(m);
+	X.clear(), Y.clear();
+	FOR(i, 1, n) {
+		si(p[i].first), si(p[i].second);
+		X.push_back(p[i].first);
+		Y.push_back(p[i].second);
+	}
+	X.push_back(-1), Y.push_back(-1);
+	sort(X.begin(), X.end());
+	sort(Y.begin(), Y.end());
+	Y.erase(unique(Y.begin(), Y.end()), Y.end());
+
+	sort(p + 1, p + 1 + n);
+	FOR(i, 1, n) {
+		p[i].first = lower_bound(X.begin(), X.end(), p[i].first) - X.begin();
+		p[i].second = lower_bound(Y.begin(), Y.end(), p[i].second) - Y.begin();
+	}
+}
+NODE* full_tree_construct(int il, int ir) {
+	if (il > ir) return nullptr;
+	NODE *res = new NODE();
+	if (il == ir) return res;
+	int im = (il + ir) / 2;
+	res->left = full_tree_construct(il, im);
+	res->right = full_tree_construct(im + 1, ir);
+	return res;
+}
+NODE* make_tree(NODE* cur, int il, int ir, int q, int v) {
+	if (ir < q || q < il) return cur;
+	NODE* ret = new NODE();
+	if (il == ir) {
+		ret->v += v;
+		if (cur) ret->v += cur->v;
+		return ret;
+	}
+	int im = (il + ir) / 2;
+	ret->left =  make_tree(cur->left, il, im, q, v);
+	ret->right = make_tree(cur->right, im + 1, ir, q, v);
+	ret->v = (ret->left ? ret->left->v : 0) + (ret->right ? ret->right->v : 0);
+	return ret;
+}
+int get_sum(NODE* cur, int il, int ir, int ql, int qr) {
+	if (cur == nullptr) return 0;
+	if (il > qr || ir < ql || il > ir || ql > qr) return 0;
+	if (ql <= il && ir <= qr) {
+		return cur->v;
+	}
+	int im = (il + ir) / 2;
+	int vl = get_sum(cur->left, il, im, ql, qr);
+	int vr = get_sum(cur->right, im+1, ir, ql, qr);
+	return vl + vr;
+}
+void pro() {
+	// construct
+	int nX = X.size() - 1, nY = Y.size() - 1;
+	FOR(i, 0, n) tree[i] = nullptr;
+
+	tree[0] = full_tree_construct(1, nY);
+
+	FOR(i, 1, n) {
+		int x = p[i].first, y = p[i].second;
+		tree[i] = make_tree(tree[i-1], 1, nY, y, 1);
+	}
+
+	int ans = 0;
+	FOR(i, 1, m) {
+		int l, r, b, t;
+		int _l, _r, _b, _t;
+		si(l), si(r), si(b), si(t);
+		_l = l, _r = r, _b = b, _t = t;
+		l = lower_bound(X.begin(), X.end(), l) - X.begin();
+		r = upper_bound(X.begin(), X.end(), r) - X.begin();
+
+		b = lower_bound(Y.begin(), Y.end(), b) - Y.begin();
+		t = upper_bound(Y.begin(), Y.end(), t) - Y.begin();
+
+		//if (X[l] == _l) l--;
+		//if (Y[b] == _b) b--;
+		l--, b--;
+		
+		//if (r > nX || X[r] != _r) r--;
+		//if (t > nY || Y[t] != _t) t--;
+		r--, t--;
+
+		// (l,r] * (b,t]
+		int t1 = get_sum(tree[r], 1, nY, b + 1, t);
+		int t2 = get_sum(tree[l], 1, nY, b + 1, t);
+		ans += t1 - t2;
+	}
+	fprintf(out, "%d\n", ans);
+}
+int main() {
+	int TT; si(TT);
+	FOR(tt, 1, TT) {
+		input();
+		pro();
+	}
+	return 0;
+}

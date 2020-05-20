@@ -11,7 +11,8 @@ struct POINT {
 	POINT() {};
 	POINT(T _x, T _y) :x(_x), y(_y) {};
 	bool operator()(POINT A, POINT B){
-		return A.y < B.y;
+		if (A.y!=B.y) return A.y < B.y;
+		return A.x<B.x;
 	}
 	bool operator<(const POINT &rhs) {
 		if (-EPS < angle - rhs.angle && angle - rhs.angle < EPS) return dis < rhs.dis;
