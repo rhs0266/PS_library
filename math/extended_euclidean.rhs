@@ -1,0 +1,13 @@
+typedef long long int ll;
+// typedef __int128 ll;
+
+// input: p, q
+// return: {{g, x}, y}
+// hint: p*x + q*y = g
+pair<pair<ll,ll>, ll> ext_euc(ll p, ll q) {
+    if (q==0){
+        return {{p,1ll},0};
+    }
+    auto res = ext_euc(q,p%q);
+    return {{res.first.first, res.second}, res.first.second-(p/q)*res.second};
+}
