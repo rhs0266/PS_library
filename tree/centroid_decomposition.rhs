@@ -1,0 +1,132 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <algorithm>
+#define NM 50005
+#define INF 0x7fffffff
+#define FOR(i,n,m) for (int i=(n);i<=(m);i++)
+#define si(n) fscanf(in,"%d",&n)
+#pragma warning(disable:4996)
+typedef unsigned long long int ll;
+using namespace std;
+
+FILE *in = stdin, *out = stdout;
+
+#include <vector>
+#include <unordered_set>
+#include <queue>
+int n;
+
+struct Tree{
+public:
+    vector<int> originalIndex;
+    vector<vector<int> > con;
+
+    void init(int n){
+        originalIndex.resize(n + 1), con.resize(n + 1);
+    }
+
+    void clear(){
+        originalIndex.clear(), con.clear();
+    }
+
+    int getN(){ return originalIndex.size(); }
+};
+
+class Decompositor {
+public:
+    Decompositor(const Tree &tree): _tree(tree), _label(0){
+        _queue.push(1);
+        _size.resize(_tree.originalIndex.size());
+        _used.resize(_tree.originalIndex.size());
+    }
+
+    bool getNextTree(Tree& decomposed_tree){
+        decomposed_tree.clear();
+        int node = getNextRoot();
+        if (node == -1) return false;
+
+        calcSize(node, -1);
+        int centroid = getCentroid(node, -1, _size[node]);
+
+        decomposed_tree.init(_size[node]);
+        _label = 0;
+        buildTreeCentroidAsRoot(decomposed_tree, centroid, -1, -1);
+
+        _used[centroid] = true;
+        for (int y: _tree.con[centroid]){
+            if (_used[y]) continue;
+            _queue.push(y);
+        }
+        return true;
+    }
+
+
+private:
+    const Tree& _tree;
+    queue<int> _queue;
+    vector<int> _size;
+    vector<bool> _used;
+    int _label;
+
+    int getNextRoot(){
+        if (_queue.empty()) return -1;
+        int ret = _queue.front();
+        _queue.pop();
+        return ret;
+    }
+
+    void calcSize(int x, int bef){
+        _size[x] = 1;
+        for (int y: _tree.con[x]){
+            if (y == bef || _used[y]) continue;
+            calcSize(y, x);
+            _size[x] += _size[y];
+        }
+    }
+
+    int getCentroid(int x, int bef, int size){
+        for (int y: _tree.con[x]){
+            if (y == bef || _used[y]) continue;
+            if (_size[y] > size / 2) return getCentroid(y, x, size);
+        }
+        return x;
+    }
+
+    void buildTreeCentroidAsRoot(Tree &tree, int x, int bef, int bef_label){
+        int label = ++_label;
+        tree.originalIndex[label] = x;
+        if (bef_label != -1) tree.con[bef_label].push_back(label);
+        for (int y: _tree.con[x]){
+            if (y == bef || _used[y]) continue;
+            buildTreeCentroidAsRoot(tree, y, x, label);
+        }
+    }
+};
+
+Tree tree;
+
+void input(){
+    fscanf(in,"%d\n",&n);
+    tree.init(n);
+    FOR (i,1,n) tree.originalIndex[i] = i;
+    FOR (i,1,n-1){
+        int x, y; si(x),si(y);
+        tree.con[x].push_back(y);
+        tree.con[y].push_back(x);
+    }
+}
+void pro(){
+    Decompositor decomp(tree);
+    for (Tree decomposed; decomp.getNextTree(decomposed);){
+        for (int node: decomposed.originalIndex){
+            if (node!=0) fprintf(out,"%d ",node);
+        }
+        fprintf(out,"\n");
+    }
+}
+int main(){
+    input();
+    pro();
+    return 0;
+}
