@@ -1,4 +1,6 @@
-# PS Library  
+# PS Library
+
+PS에서 주로 이용되는 알고리즘들을 저장하기 위한 repo이다. 파일의 확장자는 작성자의 이니셜을 따왔다(Thanks to Sungwon Bang). Profile: rhs0266.github.io, Contact Info: dkflfkdeh@naver.com
 
 ## Data Maker
 * [DM](https://github.com/rhs0266/PS_library/blob/master/DM)
