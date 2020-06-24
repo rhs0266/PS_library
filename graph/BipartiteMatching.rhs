@@ -1,0 +1,61 @@
+// boj.11375
+
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <algorithm>
+#include <vector>
+#include <queue>
+#define NM 100005
+#define INF 0x7fffffff
+#define FOR(i,n,m) for (int i=(n);i<=(m);i++)
+#define si(n) fscanf(in,"%d",&n)
+#pragma warning(disable:4996)
+typedef long long int ll;
+using namespace std;
+
+//FILE *in = fopen("../input.txt", "r"), *out = fopen("output.txt", "w");
+//FILE *in = fopen("../input.txt", "r"), *out = stdout;
+FILE* in = stdin, * out = stdout;
+
+int n, m, L[2005], R[2005];
+bool visit[2005];
+vector<int> edges[2005];
+
+void input(){
+    si(n), si(m);
+    FOR (i,1,n){
+        int x; si(x);
+        FOR (j,1,x){
+            int y; si(y);
+            edges[i].push_back(y);
+        }
+    }
+}
+
+bool dfs(int x){
+    visit[x]=true;
+    for (int y: edges[x]){
+        if (!R[y] || (!visit[R[y]] && dfs(R[y]))){
+            L[x] = y;
+            R[y] = x;
+            return true;
+        }
+    }
+    return false;
+}
+
+void pro(){
+    int res=0;
+    FOR (i,1,n){
+        FOR (j,1,n) visit[j]=0;
+        if (dfs(i)) res++;
+    }
+    fprintf(out,"%d",res);
+}
+
+int main(){
+    input();
+    pro();
+    return 0;
+}
