@@ -31,7 +31,7 @@ private:
     int n, source, sink, visitNum;
     vector<Edge> edges;
     vector<vector<int> > graph;
-    vector<int> level, visit;
+    vector<int> level;
 
     bool bfs() {
         fill(level.begin(), level.end(), -1);
@@ -55,10 +55,8 @@ private:
 
     int dfs(int cur, int cap) {
         if (cur == sink) return cap;
-        visit[cur] = visitNum;
         for (int &eIdx: graph[cur]) {
             Edge &e = edges[eIdx];
-            if (visit[e.idx] == visitNum) continue;
             if (!(e.c > 0 && level[e.idx] == level[cur] + 1)) continue;
             int _cap = dfs(e.idx, min(cap, e.c));
             if (_cap == 0) continue;
@@ -78,7 +76,6 @@ public:
     Dinic(int n, int source, int sink) : n(n), source(source), sink(sink) {
         graph.resize(n + 1);
         level.resize(n + 1);
-        visit.resize(n + 1);
         FOR (i, 0, n) graph[i].clear();
     }
 
@@ -93,7 +90,6 @@ public:
     int solve() {
         int flow = 0, res;
         while (bfs()){
-            visitNum++;
             while ((res = dfs(source, INF)) != 0) {
                 flow += res;
             }
