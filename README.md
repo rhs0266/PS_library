@@ -13,6 +13,8 @@ PS에서 주로 이용되는 알고리즘들을 저장하기 위한 repo이다. 
 * [Hopcroft Karp](https://github.com/rhs0266/PS_library/blob/master/graph/Hopcroft_Karp.bsw)
 * [Dijkstra](https://github.com/rhs0266/PS_library/blob/master/graph/dijkstra.rhs)
 * [Strong Connect Component](https://github.com/rhs0266/PS_library/blob/master/graph/SCC.rhs)
+* [Dinic](https://github.com/rhs0266/PS_library/blob/master/graph/Dinic.rhs)
+* [Bipartite Matching](https://github.com/rhs0266/PS_library/blob/master/graph/BipartiteMatching.rhs)
 
 ## Math
 * [Extended Euclidean](https://github.com/rhs0266/PS_library/blob/master/math/extended_euclidean.rhs)
