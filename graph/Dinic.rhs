@@ -1,0 +1,120 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <algorithm>
+#include <vector>
+#include <queue>
+#define NM 100005
+#define INF 0x7fffffff
+#define FOR(i,n,m) for (int i=(n);i<=(m);i++)
+#define si(n) fscanf(in,"%d",&n)
+#pragma warning(disable:4996)
+typedef long long int ll;
+using namespace std;
+
+//FILE *in = fopen("../input.txt", "r"), *out = fopen("output.txt", "w");
+//FILE *in = fopen("../input.txt", "r"), *out = stdout;
+FILE* in = stdin, * out = stdout;
+
+struct Dinic {
+private:
+    struct Edge {
+        int idx, c;
+
+        Edge() {}
+
+        Edge(int idx, int c) : idx(idx), c(c) {}
+    };
+
+    int n, source, sink;
+    vector<Edge> edges;
+    vector<vector<int> > graph;
+    vector<int> level;
+
+    bool bfs() {
+        fill(level.begin(), level.end(), -1);
+        queue<int> Q;
+        Q.push(source);
+        level[source] = 0;
+        while (!Q.empty()) {
+            int x = Q.front();
+            Q.pop();
+            for (int &eIdx: graph[x]) {
+                const Edge &e = edges[eIdx];
+                int y = e.idx;
+                int c = e.c;
+                if (level[y] != -1 || c == 0) continue;
+                Q.push(y);
+                level[y] = level[x] + 1;
+            }
+        }
+        return level[sink] != -1;
+    }
+
+    int dfs(int cur, int cap) {
+        if (cur == sink) return cap;
+        for (int &eIdx: graph[cur]) {
+            Edge &e = edges[eIdx];
+            if (!(e.c > 0 && level[e.idx] == level[cur] + 1)) continue;
+            int _cap = dfs(e.idx, min(cap, e.c));
+            if (_cap == 0) continue;
+            edges[eIdx].c -= _cap;
+            edges[eIdx ^ 1].c += _cap;
+            return _cap;
+        }
+        return 0;
+    }
+
+public:
+    Dinic() {
+        n = source = sink = 0;
+        graph.clear();
+    }
+
+    Dinic(int n, int source, int sink) : n(n), source(source), sink(sink) {
+        graph.resize(n + 1);
+        level.resize(n + 1);
+        FOR (i, 0, n) graph[i].clear();
+    }
+
+    void addEdge(int x, int y, int c) {
+        graph[x].push_back(edges.size());
+        edges.push_back(Edge(y, c));
+
+        graph[y].push_back(edges.size());
+        edges.push_back(Edge(x, 0));
+    }
+
+    int solve() {
+        int flow = 0, res;
+        while (bfs() && (res = dfs(source, INF)) != 0) {
+            flow += res;
+        }
+        return flow;
+    }
+};
+
+int n, m;
+Dinic dinic;
+void input(){
+    si(n), si(m);
+    dinic = Dinic(n + m + 2, 0, n+m+1);
+    FOR (i,1,n){
+        int x; si(x);
+        dinic.addEdge(0, i, 1);
+        FOR (j,1,x) {
+            int y;
+            si(y);
+            dinic.addEdge(i, n + y, 1);
+        }
+    }
+    FOR (i,1,m) dinic.addEdge(n+i, n+m+1, 1);
+}
+void pro(){
+    fprintf(out,"%d\n",dinic.solve());
+}
+int main(){
+    input();
+    pro();
+    return 0;
+}
