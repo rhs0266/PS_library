@@ -2,7 +2,7 @@ using namespace std;
 #include <vector>
 #include <queue>
 template <class length_T>
-struct Dijkstra{
+struct Dijkstra {
 private:
     struct Info {
         int v;
@@ -12,26 +12,29 @@ private:
 
         Info(int v, length_T cnt) : v(v), cnt(cnt) {}
     };
-    struct customCompare{
-        bool operator()(const Info& lhs, const Info& rhs){
+
+    struct customCompare {
+        bool operator()(const Info &lhs, const Info &rhs) {
             return lhs.cnt > rhs.cnt;
         }
     };
+
     int n;
     length_T DEF;
     vector<length_T> dis;
     vector<vector<Info> > edges;
-    priority_queue<Info, vector<Info>, customCompare > pq;
-    vector<length_T> process(int start){
-        FOR (i,1,n) dis[i] = DEF;
-        dis[start]=0;
+    priority_queue<Info, vector<Info>, customCompare> pq;
+
+    vector<length_T> process(int start) {
+        FOR (i, 1, n) dis[i] = DEF;
+        dis[start] = 0;
         pq.push(Info(start, 0));
-        while (!pq.empty()){
+        while (!pq.empty()) {
             Info cur = pq.top();
             pq.pop();
             if (dis[cur.v] != cur.cnt) continue;
-            for (Info& e: edges[cur.v]){
-                if (dis[e.v] > cur.cnt + e.cnt){
+            for (Info &e: edges[cur.v]) {
+                if (dis[e.v] > cur.cnt + e.cnt) {
                     dis[e.v] = cur.cnt + e.cnt;
                     pq.push(Info(e.v, dis[e.v]));
                 }
@@ -39,20 +42,24 @@ private:
         }
         return dis;
     }
+
 public:
-    Dijkstra():n(0), DEF(0){
+    Dijkstra() : n(0), DEF(0) {
         dis.clear();
         edges.clear();
     };
-    Dijkstra(int n, length_T DEF):n(n), DEF(DEF){
-        dis.resize(n+1);
-        edges.resize(n+1);
-        FOR (i,1,n) edges[i].clear();
+
+    Dijkstra(int n, length_T DEF) : n(n), DEF(DEF) {
+        dis.resize(n + 1);
+        edges.resize(n + 1);
+        FOR (i, 1, n) edges[i].clear();
     }
-    void addEdge(int x, int y, length_T cnt){
+
+    void addEdge(int x, int y, length_T cnt) {
         edges[x].push_back(Info(y, cnt));
     }
-    vector<length_T> solve(int start){
+
+    vector<length_T> solve(int start) {
         return process(start);
     }
 };
