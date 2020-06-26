@@ -1,0 +1,78 @@
+using namespace std;
+#include <vector>
+#include <queue>
+template <class length_T>
+struct SPFA {
+private:
+    struct Info {
+        int v;
+        length_T cnt;
+
+        Info() { v = cnt = 0; }
+
+        Info(int v, length_T cnt) : v(v), cnt(cnt) {}
+    };
+
+    int n;
+    bool computed;
+    length_T DEF;
+    vector<int> updateNum;
+    vector<length_T> dis;
+    vector<bool> check;
+    vector<vector<Info> > edges;
+    queue<int> que;
+
+    bool process(int start, bool negCycleDetection) {
+        computed = true;
+        FOR (i, 1, n) dis[i] = DEF, updateNum[i] = 0;
+        dis[start] = 0;
+        updateNum[start] = 1;
+        fill(check.begin(), check.end(), false);
+        que.push(start);
+        while (!que.empty()) {
+            int cur = que.front();
+            que.pop();
+            check[cur] = false;
+            for (Info &e: edges[cur]) {
+                if (dis[e.v] > dis[cur] + e.cnt) {
+                    dis[e.v] = dis[cur] + e.cnt;
+                    if (check[e.v]) continue;
+                    updateNum[e.v]++;
+                    if (updateNum[e.v] >= n) return true;
+                    que.push(e.v);
+                    check[e.v] = true;
+                }
+            }
+        }
+        return false;
+    }
+
+public:
+    SPFA() : n(0), DEF(0), computed(false) {
+        dis.clear();
+        edges.clear();
+        check.clear();
+        updateNum.clear();
+    };
+
+    SPFA(int n, length_T DEF) : n(n), DEF(DEF), computed(false) {
+        dis.resize(n + 1);
+        edges.resize(n + 1);
+        check.resize(n + 1);
+        updateNum.resize(n + 1);
+        FOR (i, 1, n) edges[i].clear();
+    }
+
+    void addEdge(int x, int y, length_T cnt) {
+        edges[x].push_back(Info(y, cnt));
+    }
+
+    vector<length_T> solve(int start) {
+        if (!computed) process(start, false);
+        return dis;
+    }
+
+    bool negativeCycleExist(int start) {
+        return process(start, true);
+    }
+};
