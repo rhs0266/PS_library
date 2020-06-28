@@ -16,6 +16,7 @@ PS에서 주로 이용되는 알고리즘들을 저장하기 위한 repo이다. 
 * [Dinic](https://github.com/rhs0266/PS_library/blob/master/graph/Dinic.rhs)
 * [Bipartite Matching](https://github.com/rhs0266/PS_library/blob/master/graph/BipartiteMatching.rhs)
 * [SPFA](https://github.com/rhs0266/PS_library/blob/master/graph/SPFA.rhs)
+* [MCMF](https://github.com/rhs0266/PS_library/blob/master/graph/MCMF.rhs)
 
 ## Math
 * [Extended Euclidean](https://github.com/rhs0266/PS_library/blob/master/math/extended_euclidean.rhs)
