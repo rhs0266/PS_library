@@ -26,6 +26,7 @@ PS에서 주로 이용되는 알고리즘들을 저장하기 위한 repo이다. 
 ## Simple
 * [FFT](https://github.com/rhs0266/PS_library/blob/master/simple/FFT.rhs)
 * [Lower & Upper Bound](https://github.com/rhs0266/PS_library/blob/master/simple/lower%26upper%20bound.rhs)
+* [Big Integer](https://github.com/rhs0266/PS_library/blob/master/simple/bigint.coci)
 
 ## String
 * [KMP](https://github.com/rhs0266/PS_library/blob/master/string/KMP.rhs)
