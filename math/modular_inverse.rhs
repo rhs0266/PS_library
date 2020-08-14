@@ -8,10 +8,11 @@
 // to m using extended Euclid Algorithm 
 // Assumption: a and m are coprimes, i.e., 
 // gcd(a, m) = 1 
-int modInverse(int a, int m) 
+typedef int modInvT;
+modInvT modInverse(modInvT a, modInvT m) 
 { 
-    int m0 = m; 
-    int y = 0, x = 1; 
+    modInvT m0 = m; 
+    modInvT y = 0, x = 1; 
   
     if (m == 1) 
       return 0; 
@@ -19,8 +20,8 @@ int modInverse(int a, int m)
     while (a > 1) 
     { 
         // q is quotient 
-        int q = a / m; 
-        int t = m; 
+        modInvT q = a / m; 
+        modInvT t = m; 
   
         // m is remainder now, process same as 
         // Euclid's algo 
