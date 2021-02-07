@@ -52,6 +52,7 @@ public:
         N = size;
         tree.resize(N * 4);
         accum_tree.resize(N * 4);
+        DEFAULT = DEF;
         FOR(i, 1, N * 4 - 1) tree[i] = accum_tree[i] = DEFAULT;
     }
     void update(int L, int R, ll cnt, ll f(ll, ll)) { update(1, 1, N, L, R, cnt, f); }
