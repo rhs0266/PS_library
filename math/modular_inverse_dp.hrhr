@@ -1,1 +1,6 @@
-
+	fact[0] = factinv[0] = inv[1] = 1;
+	for (int i = 1; i <= 400; i++) {
+		inv[i + 1] = (MOD - MOD / (i + 1)) * inv[MOD % (i + 1)] % MOD;
+		fact[i] = fact[i - 1] * i % MOD;
+		factinv[i] = factinv[i - 1] * inv[i] % MOD;
+	}
