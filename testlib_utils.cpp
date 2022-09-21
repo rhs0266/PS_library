@@ -6,10 +6,10 @@
 
 using namespace std;
 
-int n, m, K, L;
+int n, m, K, L, portion;
 
 /*
-selecet_distinct := low 이상 high 이하의 정수 중에서 num 개의 서로 다른 정수를 선택해주는 함수
+selecet_distinct := select distinct <num> numbers in [<low>, <high>].
 */
 vector<int> select_distinct(int low, int high, int num) {
     assert(num <= high - low + 1);
@@ -30,7 +30,7 @@ vector<int> select_distinct(int low, int high, int num) {
 }
 
 /*
-distribute := pie를 num명한테 분배해주는 함수. 각 사람은 적어도 1개는 받을 수 있다.
+distribute := distribute <pie> to the <num> people. each person has at least one pie.
 */
 vector<int> distribute(int pie, int num) {
     vector<int> res = select_distinct(1, pie - 1, num - 1);
@@ -43,22 +43,22 @@ vector<int> distribute(int pie, int num) {
 }
 
 typedef long long int T;
-#define vp vector<POINT>
+#define vp vector<Point2D>
 
-struct POINT {
+struct Point2D {
     T x, y, dis;
 
-    POINT() {};
+    Point2D() {};
 
-    POINT(T _x, T _y) : x(_x), y(_y) {};
+    Point2D(T _x, T _y) : x(_x), y(_y) {};
 
-    bool operator()(POINT A, POINT B) {
+    bool operator()(Point2D A, Point2D B) {
         if (A.y != B.y) return A.y < B.y;
         return A.x < B.x;
     }
 };
 
-int ccw(POINT a, POINT b, POINT c) {
+int ccw(Point2D a, Point2D b, Point2D c) {
     T t = (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x);
     if (t > 0) return 1;
     if (t < 0) return -1;
@@ -71,15 +71,15 @@ private:
     int n;
 
     void calc() {
-        sort(a.begin(), a.end(), POINT());
-        POINT pad = a[0];
+        sort(a.begin(), a.end(), Point2D());
+        Point2D pad = a[0];
         for (int i = 0; i < n; i++) {
             a[i].x -= pad.x;
             a[i].y -= pad.y;
             a[i].dis = a[i].x * a[i].x + a[i].y * a[i].y;
         }
-        sort(a.begin(), a.end(), [](const POINT &A, const POINT &B) {
-            int _ccw = ccw(POINT(0, 0), A, B);
+        sort(a.begin(), a.end(), [](const Point2D &A, const Point2D &B) {
+            int _ccw = ccw(Point2D(0, 0), A, B);
             if (_ccw != 0) return _ccw == 1;
             return A.dis < B.dis;
         });
@@ -106,21 +106,21 @@ public:
     }
 };
 
-int taxi_dist(POINT A, POINT B) {
+int taxi_dist(Point2D A, Point2D B) {
     return abs(A.x - B.x) + abs(A.y - B.y);
 }
 
-int euclidean_dist(POINT A, POINT B) {
+int euclidean_dist(Point2D A, Point2D B) {
     return (A.x - B.x) * (A.x - B.x) + (A.y - B.y) * (A.y - B.y);
 }
 
-void make_boundary(vector<vector<int>> &maze, POINT A, POINT B, vector<pair<int, int>> &dirs) {
+void make_boundary(vector<vector<int>> &maze, Point2D A, Point2D B, vector<pair<int, int>> &dirs) {
     while (A.x != B.x || A.y != B.y) {
         maze[A.x][A.y] = 1;
         vector<int> cands;
         int cur_dist = taxi_dist(A, B);
         for (int i = 0; i < dirs.size(); i++) {
-            POINT C(A.x + dirs[i].first, A.y + dirs[i].second);
+            Point2D C(A.x + dirs[i].first, A.y + dirs[i].second);
             if (C.x < 0 || C.y < 0 || C.x >= n || C.y >= m) continue;
             if (cur_dist >= taxi_dist(C, B)) cands.push_back(i);
         }
@@ -133,7 +133,7 @@ void make_boundary(vector<vector<int>> &maze, POINT A, POINT B, vector<pair<int,
 }
 
 /*
-generate_map := 닫혀있는 영억을 K개 만듭니다. 한 변의 길이는 최대 L입니다.
+generate_map := create <K> closed areas. each area's side is at most <L> length.
 */
 vector<vector<int>> generate_map(int n, int m, int K, int L) {
     vector<vector<int>> a(n, vector<int>(m, 0));
@@ -146,7 +146,7 @@ vector<vector<int>> generate_map(int n, int m, int K, int L) {
         x1--, y1--, x2--, y2--;
 
         int cnt_points = rnd.next(3, 8);
-        vector<POINT> points;
+        vector<Point2D> points;
         for (int i = 0; i < cnt_points; i++) {
             int x = rnd.next(x1, x2);
             int y = rnd.next(y1, y2);
@@ -187,7 +187,7 @@ bool Union(int x1, int y1, int x2, int y2, vector<vector<pair<int, int>>> &par) 
 }
 
 /*
-generate_maze := 미로 생성해주는 함수.
+generate_maze := generate a maze.
 */
 
 struct Z {
