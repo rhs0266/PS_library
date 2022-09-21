@@ -8,11 +8,11 @@ using namespace std;
 
 int n, m, K, L;
 
-struct Z {
-    int x1, y1, x2, y2;
-};
-
+/*
+selecet_distinct := low 이상 high 이하의 정수 중에서 num 개의 서로 다른 정수를 선택해주는 함수
+*/
 vector<int> select_distinct(int low, int high, int num) {
+    assert(num <= high - low + 1);
     unordered_map<int, int> mem;
     vector<int> res;
     int s = low;
@@ -29,6 +29,9 @@ vector<int> select_distinct(int low, int high, int num) {
     return res;
 }
 
+/*
+distribute := pie를 num명한테 분배해주는 함수. 각 사람은 적어도 1개는 받을 수 있다.
+*/
 vector<int> distribute(int pie, int num) {
     vector<int> res = select_distinct(1, pie - 1, num - 1);
     res.push_back(pie);
@@ -38,7 +41,6 @@ vector<int> distribute(int pie, int num) {
     for (int i = num - 1; i >= 1; i--) res[i] -= res[i - 1];
     return res;
 }
-
 
 typedef long long int T;
 #define vp vector<POINT>
@@ -129,7 +131,9 @@ void make_boundary(vector<vector<int>> &maze, POINT A, POINT B, vector<pair<int,
     maze[A.x][A.y] = 1;
 }
 
-// K 개의 구역을 만들 것. 한 변의 길이 최대 L
+/*
+generate_map := 닫혀있는 영억을 K개 만듭니다. 한 변의 길이는 최대 L입니다.
+*/
 vector<vector<int>> generate_map(int n, int m, int K, int L) {
     vector<vector<int>> a(n, vector<int>(m, 0));
 
@@ -166,26 +170,92 @@ vector<vector<int>> generate_map(int n, int m, int K, int L) {
     return a;
 }
 
-void make() {
-    auto maze = generate_map(n, m, K, L);
 
-    cout << n << " " << m << "\n";
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < m; j++) {
-            cout << maze[i][j];
-            if (j + 1 < m) cout << " ";
-        }
-        cout << "\n";
-    }
+pair<int, int> Find(int x, int y, vector<vector<pair<int, int>>> &par) {
+    if (x == par[x][y].first && y == par[x][y].second) return {x, y};
+    par[x][y] = Find(par[x][y].first, par[x][y].second, par);
+    return par[x][y];
 }
 
-int main(int argc, char *argv[]) {
-    registerGen(argc, argv, 1);
-//    n = atoi(argv[1]);
-//    m = atoi(argv[2]);
-//    E = atoi(argv[3]);
-//    portion = atoi(argv[4]);
-    n = 50, m = 50, K = 2, L = 30;
-    make();
-    return 0;
+bool Union(int x1, int y1, int x2, int y2, vector<vector<pair<int, int>>> &par) {
+    pair<int, int> p1 = Find(x1, y1, par);
+    pair<int, int> p2 = Find(x2, y2, par);
+    if (p1 == p2) return false;
+    par[p1.first][p1.second] = p2;
+    return true;
+}
+
+/*
+generate_maze := 미로 생성해주는 함수.
+*/
+vector<vector<int>> generate_maze(int n, int m) {
+    vector<vector<int>> res(n, vector<int>(m));
+    vector<vector<pair<int, int>>> par(n, vector<pair<int, int>>(m));
+
+    vector<int> X, Y;
+    for (int i = 0; i < n; i += 2) {
+        if (i == n - 2) i = n - 1;
+        if (i % 2 == n % 2 && rnd.next(0, 10) == 0) i++;
+        X.push_back(i);
+    }
+    for (int i = 0; i < m; i += 2) {
+        if (i == m - 2) i = m - 1;
+        if (i % 2 == m % 2 && rnd.next(0, 10) == 0) i++;
+        Y.push_back(i);
+    }
+
+    int xs = X.size(), ys = Y.size();
+
+    vector<int> sel = select_distinct(1, xs * ys - 2, xs * ys - 2);
+    sel.push_back(0);
+    sel.push_back(xs * ys - 1);
+
+    vector<pair<int, int>> points, sel_points;
+    for (int i = 0; i < xs; i++) {
+        for (int j = 0; j < ys; j++) {
+            points.push_back({X[i], Y[j]});
+        }
+    }
+    for (int i: sel) sel_points.push_back(points[i]);
+
+    for (auto p: sel_points) {
+        res[p.first][p.second] = 1;
+    }
+
+    vector<Z> edges;
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            if (res[i][j] == 0) continue;
+            for (int i2 = i + 1; i2 < n; i2++) {
+                if (res[i2][j] == 1) {
+                    edges.push_back({i, j, i2, j});
+                    break;
+                }
+            }
+            for (int j2 = j + 1; j2 < m; j2++) {
+                if (res[i][j2] == 1) {
+                    edges.push_back({i, j, i, j2});
+                    break;
+                }
+            }
+        }
+    }
+
+    shuffle(edges.begin(), edges.end());
+
+    for (int i = 0; i < n; i++) for (int j = 0; j < m; j++) par[i][j] = {i, j};
+
+    for (Z e: edges) {
+        int x1 = e.x1, y1 = e.y1, x2 = e.x2, y2 = e.y2;
+        if (Union(x1, y1, x2, y2, par)) {
+            for (int x = min(x1, x2); x <= max(x1, x2); x++) {
+                for (int y = min(y1, y2); y <= max(y1, y2); y++) {
+                    res[x][y] = 1;
+                }
+            }
+        }
+    }
+
+    return res;
 }
