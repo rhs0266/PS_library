@@ -49,6 +49,7 @@ struct POINT {
     T x, y, dis;
 
     POINT() {};
+
     POINT(T _x, T _y) : x(_x), y(_y) {};
 
     bool operator()(POINT A, POINT B) {
@@ -188,6 +189,11 @@ bool Union(int x1, int y1, int x2, int y2, vector<vector<pair<int, int>>> &par) 
 /*
 generate_maze := 미로 생성해주는 함수.
 */
+
+struct Z {
+    int x1, y1, x2, y2;
+};
+
 vector<vector<int>> generate_maze(int n, int m) {
     vector<vector<int>> res(n, vector<int>(m));
     vector<vector<pair<int, int>>> par(n, vector<pair<int, int>>(m));
