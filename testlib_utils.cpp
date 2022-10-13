@@ -42,6 +42,33 @@ vector<int> distribute(int pie, int num) {
     return res;
 }
 
+/*
+gen_names := generate names which length between <min_len> and <max_len>.
+*/
+vector<string> gen_names(int n, int min_len, int max_len, bool redundant) {
+    vector<string> res;
+    for (int i=0;i<n;i++){
+        int len = rnd.next(min_len, max_len);
+        string name = "";
+        for (int j=0;j<len;j++){
+            name += char('a' + rnd.next(0, 25));
+        }
+        
+        bool flag = true;
+        if (!redundant) {
+            for (int j=0;j<i;j++){
+                if (res[j] == name) flag = false;
+            }
+        }
+        if (!flag){
+            i--;
+            continue;
+        }
+        res.push_back(name);
+    }
+    return res;
+}
+
 typedef long long int T;
 #define vp vector<Point2D>
 
