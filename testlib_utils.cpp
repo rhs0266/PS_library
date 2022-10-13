@@ -265,3 +265,14 @@ vector<vector<int>> generate_maze(int n, int m) {
 
     return res;
 }
+
+void make(){
+}
+
+int main(int argc, char* argv[])
+{
+	registerGen(argc, argv, 1);
+    
+	make();
+	return 0;
+}
