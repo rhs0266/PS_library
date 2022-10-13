@@ -6,7 +6,6 @@
 
 using namespace std;
 
-int n, m, K, L, portion;
 
 /*
 selecet_distinct := select distinct <num> numbers in [<low>, <high>].
