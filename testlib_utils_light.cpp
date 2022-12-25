@@ -42,6 +42,22 @@ vector<int> distribute(int pie, int num) {
 }
 
 /*
+distribute_nullable := distribute <pie> to the <num> people. each person has equal or more than 0.
+*/
+vector<int> distribute_nullable(int pie, int num) {
+    vector<int> res;
+    for (int i = 0; i < num - 1; i++) {
+        res.push_back(rnd.next(0, pie));
+    }
+    res.push_back(pie);
+
+    sort(res.begin(), res.end());
+
+    for (int i = num - 1; i >= 1; i--) res[i] -= res[i - 1];
+    return res;
+}
+
+/*
 gen_names := generate names which length between <min_len> and <max_len>.
 */
 vector<string> gen_names(int n, int min_len, int max_len, bool redundant) {
