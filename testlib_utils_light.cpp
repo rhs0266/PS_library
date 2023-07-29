@@ -3,6 +3,8 @@
 #include <time.h>
 #include <assert.h>
 #include <unordered_map>
+#define sp ' '
+#define nl '\n'
 
 using namespace std;
 
