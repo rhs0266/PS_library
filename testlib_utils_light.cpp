@@ -86,6 +86,13 @@ vector<string> gen_names(int n, int min_len, int max_len, bool redundant) {
     return res;
 }
 
+vector<bool> check_distinct(int n, int m) {
+    vector<bool> res(n);
+    vector<int> sel = select_distinct(0, n-1, m);
+    for (int x: sel) res[x] = true;
+    return res;
+}
+
 void make(){
 }
 
