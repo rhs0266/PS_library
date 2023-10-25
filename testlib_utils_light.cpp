@@ -99,7 +99,9 @@ void make(){
 int main(int argc, char* argv[])
 {
 	registerGen(argc, argv, 1);
-    
+    	auto z = [argv](int idx) -> int {
+	    return atoi(argv[idx]);
+	};
 	make();
 	return 0;
 }
